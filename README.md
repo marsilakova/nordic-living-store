@@ -1,5 +1,8 @@
 
 # Nordic Living Store – E-Commerce i React
+**Live-demo:** [https://nordic-living-store-mu.vercel.app]
+
+
 
 En modern, interaktiv och responsiv e-handelsapplikation för skandinavisk heminredning och design, byggd med **React** och **Vite**.
 
