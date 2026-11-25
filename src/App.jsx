@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { products } from './data/products';
 import Navbar from './components/Navbar';
 import ProductCard from './components/ProductCard';
+import ProductDetails from './components/ProductDetails';
 import CartDrawer from './components/CartDrawer';
 import './App.css';
 
@@ -65,85 +67,101 @@ export default function App() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="app">
-      <Navbar cartCount={totalItems} onOpenCart={() => setIsCartOpen(true)} />
+    <BrowserRouter>
+      <div className="app">
+        <Navbar cartCount={totalItems} onOpenCart={() => setIsCartOpen(true)} />
 
-      <section className="hero">
-        <div className="container">
-          <span className="hero-tag">Scandinavian Home & Decor</span>
-          <h2>Timeless Nordic Craftsmanship for Everyday Living</h2>
-          <p>
-            Curated ceramics, warm ambient lighting, and natural Baltic textiles
-            designed for calm, minimalist interiors.
-          </p>
-        </div>
-      </section>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <section className="hero">
+                  <div className="container">
+                    <span className="hero-tag">Scandinavian Home & Decor</span>
+                    <h2>Timeless Nordic Craftsmanship for Everyday Living</h2>
+                    <p>
+                      Curated ceramics, warm ambient lighting, and natural Baltic textiles
+                      designed for calm, minimalist interiors.
+                    </p>
+                  </div>
+                </section>
 
-      <main className="container main-content">
-        <div className="controls-bar">
-          <div className="category-filters">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={`filter-btn ${
-                  selectedCategory === category ? 'active' : ''
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+                <main className="container main-content">
+                  <div className="controls-bar">
+                    <div className="category-filters">
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          className={`filter-btn ${
+                            selectedCategory === category ? 'active' : ''
+                          }`}
+                          onClick={() => setSelectedCategory(category)}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
 
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+
+                  {filteredProducts.length === 0 ? (
+                    <div className="no-results">
+                      <p>No products found matching your filter.</p>
+                      <button
+                        className="btn-outline"
+                        onClick={() => {
+                          setSelectedCategory('All');
+                          setSearchQuery('');
+                        }}
+                      >
+                        Reset Filters
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="products-grid">
+                      {filteredProducts.map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          onAddToCart={handleAddToCart}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </main>
+              </>
+            }
           />
-        </div>
 
-        {filteredProducts.length === 0 ? (
-          <div className="no-results">
-            <p>No products found matching your filter.</p>
-            <button
-              className="btn-outline"
-              onClick={() => {
-                setSelectedCategory('All');
-                setSearchQuery('');
-              }}
-            >
-              Reset Filters
-            </button>
+          <Route
+            path="/product/:id"
+            element={<ProductDetails onAddToCart={handleAddToCart} />}
+          />
+        </Routes>
+
+        <footer className="footer">
+          <div className="container">
+            <p>© 2026 Nordic Living Store • Malmö, Sweden</p>
           </div>
-        ) : (
-          <div className="products-grid">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+        </footer>
 
-      <footer className="footer">
-        <div className="container">
-          <p>© 2026 Nordic Living Store • Malmö, Sweden</p>
-        </div>
-      </footer>
-
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cart={cart}
-        onUpdateQty={handleUpdateQty}
-        onRemove={handleRemove}
-        onClearCart={handleClearCart}
-      />
-    </div>
+        <CartDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cart={cart}
+          onUpdateQty={handleUpdateQty}
+          onRemove={handleRemove}
+          onClearCart={handleClearCart}
+        />
+      </div>
+    </BrowserRouter>
   );
 }
