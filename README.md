@@ -18,6 +18,7 @@ En modern, interaktiv och responsiv e-handelsapplikation för skandinavisk hemin
 * **Beständig data (`localStorage`):** Sparar användarens varukorg lokalt i webbläsaren.
 * **Villkorlig rendering (Conditional Rendering):** Visar olika vyer beroende på om varukorgen är tom, innehåller varor eller om en beställning har slutförts.
 * **Responsiv design:** Anpassad för mobil, surfplatta och dator med CSS Grid, Flexbox och media queries.
+* * **Klientbaserad routing (`React Router`):** Dynamisk navigering mellan startsidan och individuella produktsidor (`/product/:id`) med `BrowserRouter`, `Routes`, `Link` och `useParams`.
 
 ## Använda tekniker
 * **React (ES6+)**
@@ -31,10 +32,13 @@ nordic-living-store/
 ├── public/
 │   └── images/             # Produktbilder
 ├── src/
+│   
 │   ├── components/
-│   │   ├── Navbar.jsx      # Sidhuvud med varukorgsräknare
-│   │   ├── ProductCard.jsx # Återanvändbart produktkort
-│   │   └── CartDrawer.jsx  # Utdragbar varukorg & kassaformulär
+│   │   ├── Navbar.jsx         # Sidhuvud med varukorgsräknare
+│   │   ├── ProductCard.jsx    # Återanvändbart produktkort
+│   │   ├── ProductDetails.jsx # Detaljsida för enskild produkt
+│   │   └── CartDrawer.jsx     # Utdragbar varukorg & kassaformulär
+
 │   ├── data/
 │   │   └── products.js     # Produktkatalog
 │   ├── App.jsx             # Huvudkomponent med filtrering & state
